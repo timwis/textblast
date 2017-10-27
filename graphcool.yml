@@ -20,12 +20,12 @@ functions:
     handler:
       code: src/email-password/loggedInUser.ts
 
-  setupTwilioSubaccount:
+  setupTwilioResources:
     type: subscription
-    query: src/setup-twilio-subaccount/query.graphql
+    query: src/setup-twilio-resources/query.graphql
     handler:
       code:
-        src: src/setup-twilio-subaccount/index.js
+        src: src/setup-twilio-resources/index.js
         environment:
           TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
           TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
