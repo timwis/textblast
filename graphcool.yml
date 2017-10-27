@@ -1,0 +1,45 @@
+types: ./types.graphql
+
+functions:
+
+  signup:
+    type: resolver
+    schema: src/email-password/signup.graphql
+    handler:
+      code: src/email-password/signup.ts
+
+  authenticate:
+    type: resolver
+    schema: src/email-password/authenticate.graphql
+    handler:
+      code: src/email-password/authenticate.ts
+
+  loggedInUser:
+    type: resolver
+    schema: src/email-password/loggedInUser.graphql
+    handler:
+      code: src/email-password/loggedInUser.ts
+
+  setupTwilioSubaccount:
+    type: subscription
+    query: src/setup-twilio-subaccount/query.graphql
+    handler:
+      code:
+        src: src/setup-twilio-subaccount/index.js
+        environment:
+          TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+          TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+
+# Model/Relation permissions are used to limit the API access
+# To take the burden of thinking about those while development, we 
+# preconfigured the wildcard ("*") permission that allows everything
+# Read more here:
+# https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
+permissions:
+- operation: "*"
+
+# Your root tokens used for functions to get full access to the API
+# Read more here:
+# https://docs-next.graph.cool/reference/auth/authentication/authentication-tokens-eip7ahqu5o
+# rootTokens:
+# - mytoken

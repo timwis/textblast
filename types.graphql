@@ -1,0 +1,38 @@
+type User @model {
+  # Required system field:
+  id: ID! @isUnique # read-only (managed by Graphcool)
+  name: String
+  dateOfBirth: DateTime
+
+  # Optional system fields (remove if not needed):
+  createdAt: DateTime! # read-only (managed by Graphcool)
+  updatedAt: DateTime! # read-only (managed by Graphcool)
+
+  email: String! @isUnique
+  password: String!
+
+  twilioSubaccount: TwilioSubaccount @relation(name: "UserTwilioSubaccount")
+}
+
+type TwilioSubaccount @model {
+  id: ID! @isUnique
+  user: User! @relation(name: "UserTwilioSubaccount")
+  sid: String!
+  authToken: String!
+  createdAt: DateTime!
+
+  twilioMessagingService: TwilioMessagingService @relation(name: "TwilioSubaccountTwilioMessagingService")
+  twilioNotifyService: TwilioNotifyService @relation(name: "TwilioSubaccountTwilioNotifyService")
+}
+
+type TwilioMessagingService @model {
+  id: ID! @isUnique
+  twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioMessagingService")
+  sid: String!
+}
+
+type TwilioNotifyService @model {
+  id: ID! @isUnique
+  twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioNotifyService")
+  sid: String!
+}
