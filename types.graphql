@@ -12,6 +12,9 @@ type User @model {
   password: String!
 
   twilioSubaccount: TwilioSubaccount @relation(name: "UserTwilioSubaccount")
+  recipients: [Recipient!]! @relation(name: "UserRecipients")
+  blasts: [Blast!]! @relation(name: "UserBlasts")
+  inbounds: [Inbound!]! @relation(name: "UserInbounds")
 }
 
 type TwilioSubaccount @model {
@@ -29,10 +32,45 @@ type TwilioMessagingService @model {
   id: ID! @isUnique
   twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioMessagingService")
   sid: String!
+  createdAt: DateTime!
 }
 
 type TwilioNotifyService @model {
   id: ID! @isUnique
   twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioNotifyService")
   sid: String!
+  createdAt: DateTime!
+}
+
+type Recipient @model {
+  id: ID! @isUnique
+  user: User! @relation(name: "UserRecipients")
+  tags: [String!]!
+  phoneNumber: String!
+  name: String
+  blasts: [Blast!]! @relation(name: "BlastRecipients")
+  inbounds: [Inbound!]! @relation(name: "RecipientInbounds")
+
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Blast @model {
+  id: ID! @isUnique
+  user: User! @relation(name: "UserBlasts")
+  body: String!
+  twilioNotificationSid: String
+  recipients: [Recipient!]! @relation(name: "BlastRecipients")
+
+  createdAt: DateTime!
+}
+
+type Inbound @model {
+  id: ID! @isUnique
+  twilioSid: String!
+  user: User! @relation(name: "UserInbounds")
+  recipient: Recipient @relation(name: "RecipientInbounds")
+  body: String!
+
+  createdAt: DateTime!
 }
