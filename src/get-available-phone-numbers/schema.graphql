@@ -1,0 +1,12 @@
+type TwilioPhoneNumber {
+  friendlyName: String
+  phoneNumber: String
+  region: String
+  postalCode: String
+}
+
+extend type Mutation {
+  getAvailablePhoneNumbers(
+    areaCode: String
+  ): [TwilioPhoneNumber!]!
+}

@@ -30,6 +30,16 @@ functions:
           TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
           TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
 
+  getAvailablePhoneNumbers:
+    type: resolver
+    schema: src/get-available-phone-numbers/schema.graphql
+    handler:
+      code:
+        src: src/get-available-phone-numbers/index.js
+        environment:
+          TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+          TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+
 # Model/Relation permissions are used to limit the API access
 # To take the burden of thinking about those while development, we 
 # preconfigured the wildcard ("*") permission that allows everything

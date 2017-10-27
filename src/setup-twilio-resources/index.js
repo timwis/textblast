@@ -5,7 +5,6 @@ const { fromEvent } = require('graphcool-lib')
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env
 
 module.exports = async (event) => {
-  console.log(event)
   const graphcool = fromEvent(event)
   const api = graphcool.api('simple/v1')
   const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
