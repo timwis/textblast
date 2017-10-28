@@ -40,6 +40,12 @@ functions:
           TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
           TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
 
+  buyTwilioPhoneNumber:
+    type: operationBefore
+    operation: TwilioPhoneNumber.create
+    handler:
+      code: src/buy-twilio-phone-number/index.js
+
   sendTwilioNotification:
     type: subscription
     query: src/send-twilio-notification/query.graphql

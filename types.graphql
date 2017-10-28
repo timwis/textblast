@@ -26,6 +26,7 @@ type TwilioSubaccount @model {
 
   twilioMessagingService: TwilioMessagingService @relation(name: "TwilioSubaccountTwilioMessagingService")
   twilioNotifyService: TwilioNotifyService @relation(name: "TwilioSubaccountTwilioNotifyService")
+  twilioPhoneNumber: TwilioPhoneNumber @relation(name: "TwilioSubaccountTwilioPhoneNumber")
 }
 
 type TwilioMessagingService @model {
@@ -39,6 +40,15 @@ type TwilioNotifyService @model {
   id: ID! @isUnique
   twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioNotifyService")
   sid: String!
+  createdAt: DateTime!
+}
+
+type TwilioPhoneNumber @model {
+  id: ID! @isUnique
+  twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioPhoneNumber")
+  sid: String!
+  phoneNumber: String!
+  friendlyName: String!
   createdAt: DateTime!
 }
 
