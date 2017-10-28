@@ -1,15 +1,12 @@
 type User @model {
   # Required system field:
   id: ID! @isUnique # read-only (managed by Graphcool)
-  name: String
-  dateOfBirth: DateTime
+  email: String! @isUnique
+  password: String!
 
   # Optional system fields (remove if not needed):
   createdAt: DateTime! # read-only (managed by Graphcool)
   updatedAt: DateTime! # read-only (managed by Graphcool)
-
-  email: String! @isUnique
-  password: String!
 
   twilioSubaccount: TwilioSubaccount @relation(name: "UserTwilioSubaccount")
   recipients: [Recipient!]! @relation(name: "UserRecipients")

@@ -57,6 +57,12 @@ permissions:
 # Development
 # - operation: "*"
 
+# User
+- operation: User.read
+  authenticated: true
+  fields: [id, email]
+  query: src/permissions/user.graphql:UserIsSelf
+
 # Blast
 - operation: Blast.read
   authenticated: true
