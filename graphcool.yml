@@ -63,6 +63,29 @@ permissions:
   fields: [id, email]
   query: src/permissions/user.graphql:UserIsSelf
 
+# Recipient
+- operation: Recipient.read
+  authenticated: true
+  fields: [id, tags, phoneNumber, name, createdAt]
+  query: src/permissions/recipient.graphql:RecipientBelongsToSelf
+
+- operation: Recipient.create
+  authenticated: true
+  fields: [tags, phoneNumber, name]
+
+- operation: UserRecipients.connect
+  authenticated: true
+  query: src/permissions/recipient.graphql:UserIsSelf
+
+- operation: Recipient.update
+  authenticated: true
+  fields: [tags, name]
+  query: src/permissions/recipient.graphql:RecipientBelongsToSelf
+
+- operation: Recipient.delete
+  authenticated: true
+  query: src/permissions/recipient.graphql:RecipientBelongsToSelf
+
 # Blast
 - operation: Blast.read
   authenticated: true

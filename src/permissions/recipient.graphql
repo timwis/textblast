@@ -1,0 +1,18 @@
+query RecipientBelongsToSelf ($user_id: ID!, $node_id: ID!) {
+  SomeRecipientExists(filter: {
+    id: $node_id
+    user: {
+      id: $user_id
+    }
+  })
+}
+
+query UserIsSelf ($user_id: ID!, $userUser_id: ID!) {
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $userUser_id
+    }]
+  })
+}
