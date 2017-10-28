@@ -41,8 +41,8 @@ functions:
           TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
 
   buyTwilioPhoneNumber:
-    type: operationBefore
-    operation: TwilioPhoneNumber.create
+    type: resolver
+    schema: src/buy-twilio-phone-number/schema.graphql
     handler:
       code: src/buy-twilio-phone-number/index.js
 
@@ -103,6 +103,11 @@ permissions:
 - operation: BlastRecipients.connect
   authenticated: true
   query: src/permissions/blast.graphql:RecipientBelongsToSelf
+
+# TwilioPhoneNumber
+- operation: TwilioPhoneNumber.read
+  authenticated: true
+  query: src/permissions/twilio-phone-number.graphql:TwilioPhoneNumberBelongsToSelf
 
 # Your root tokens used for functions to get full access to the API
 # Read more here:

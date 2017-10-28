@@ -1,0 +1,10 @@
+type BoughtTwilioPhoneNumber {
+  id: ID!
+  phoneNumber: String!
+}
+
+extend type Mutation {
+  buyTwilioPhoneNumber(
+    phoneNumber: String!
+  ): BoughtTwilioPhoneNumber
+}

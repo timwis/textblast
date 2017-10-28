@@ -45,7 +45,6 @@ type TwilioPhoneNumber @model {
   twilioSubaccount: TwilioSubaccount! @relation(name: "TwilioSubaccountTwilioPhoneNumber")
   sid: String!
   phoneNumber: String!
-  friendlyName: String!
   createdAt: DateTime!
 }
 

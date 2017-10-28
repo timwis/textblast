@@ -1,0 +1,10 @@
+query TwilioPhoneNumberBelongsToSelf ($user_id: ID!, $node_id: ID!) {
+  SomeTwilioPhoneNumberExists(filter: {
+    id: $node_id
+    twilioSubaccount: {
+      user: {
+        id: $user_id
+      }
+    }
+  })
+}

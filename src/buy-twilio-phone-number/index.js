@@ -1,12 +1,20 @@
 'use latest'
 const twilio = require('twilio')
 const { fromEvent } = require('graphcool-lib')
+const pick = require('lodash/pick')
 
 module.exports = async (event) => {
-  const { phoneNumber, twilioSubaccountId } = event.data
+  const auth = event.context.auth
+  if (!auth || !auth.nodeId || auth.typeName !== 'User') {
+    return { error: 'Insufficient permissions' }
+  }
+
+  const userId = auth.nodeId
+  const phoneNumber = event.data.phoneNumber
+
   const graphcool = fromEvent(event)
   const api = graphcool.api('simple/v1')
-  const subaccount = await getTwilioSubaccount(twilioSubaccountId)
+  const subaccount = await getTwilioSubaccount(userId)
   const messagingService = subaccount.twilioMessagingService
   const client = twilio(subaccount.sid, subaccount.authToken)
 
@@ -20,18 +28,25 @@ module.exports = async (event) => {
 
   // Associate phone number with messaging service
   // https://www.twilio.com/docs/api/messaging/services-phone-numbers
-  await client
+  const twilioPhoneNumber = await client
     .messaging
     .services(messagingService.sid)
     .phoneNumbers
     .create({ phoneNumberSid })
 
-  return event
+  // Save to graphcool db
+  const savedTwilioPhoneNumber = await saveTwilioPhoneNumber(twilioPhoneNumber)
+  return { data: savedTwilioPhoneNumber }
 
-  function getTwilioSubaccount (id) {
+  function getTwilioSubaccount (userId) {
     const query = `
-      query ($id: ID!) {
-        TwilioSubaccount(id: $id) {
+      query ($userId: ID!) {
+        allTwilioSubaccounts(filter: {
+          user: {
+            id: $userId
+          }
+        }) {
+          id
           sid
           authToken
           twilioMessagingService {
@@ -40,7 +55,26 @@ module.exports = async (event) => {
         }
       }
     `
-    return api.request(query, { id })
-      .then((response) => response.TwilioSubaccount)
+    return api.request(query, { userId })
+      .then((response) => response.allTwilioSubaccounts[0])
+  }
+
+  function saveTwilioPhoneNumber (twilioPhoneNumber) {
+    const payload = pick(twilioPhoneNumber, ['sid', 'phoneNumber'])
+    payload.twilioSubaccountId = subaccount.id
+    const mutation = `
+      mutation ($twilioSubaccountId: ID!, $sid: String!, $phoneNumber: String!) {
+        createTwilioPhoneNumber (
+          twilioSubaccountId: $twilioSubaccountId,
+          sid: $sid,
+          phoneNumber: $phoneNumber
+        ) {
+          id
+          phoneNumber
+        }
+      }
+    `
+    return api.request(mutation, payload)
+      .then((response) => response.createTwilioPhoneNumber)
   }
 }
