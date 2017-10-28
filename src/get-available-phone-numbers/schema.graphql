@@ -5,7 +5,7 @@ type TwilioAvailablePhoneNumber {
   postalCode: String
 }
 
-extend type Mutation {
+extend type Query {
   getAvailablePhoneNumbers(
     areaCode: String
   ): [TwilioAvailablePhoneNumber!]!

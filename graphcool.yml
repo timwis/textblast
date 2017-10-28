@@ -34,11 +34,7 @@ functions:
     type: resolver
     schema: src/get-available-phone-numbers/schema.graphql
     handler:
-      code:
-        src: src/get-available-phone-numbers/index.js
-        environment:
-          TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
-          TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+      code: src/get-available-phone-numbers/index.js
 
   buyTwilioPhoneNumber:
     type: resolver
@@ -50,8 +46,7 @@ functions:
     type: subscription
     query: src/send-twilio-notification/query.graphql
     handler:
-      code:
-        src: src/send-twilio-notification/index.js
+      code: src/send-twilio-notification/index.js
 
 permissions:
 # Development
