@@ -1,0 +1,27 @@
+query BlastBelongsToSelf ($user_id: ID!, $node_id: ID!) {
+  SomeUserExists(filter: {
+    id: $user_id
+    blasts_some: {
+      id: $node_id
+    }
+  })
+}
+
+query UserIsSelf ($user_id: ID!, $userUser_id: ID!) {
+  SomeUserExists(filter: {
+    AND: [{
+      id: $user_id
+    }, {
+      id: $userUser_id
+    }]
+  })
+}
+
+query RecipientBelongsToSelf ($user_id: ID!, $recipientsRecipient_id: ID!) {
+  SomeRecipientExists(filter: {
+    id: $recipientsRecipient_id,
+    user: {
+      id: $user_id
+    }
+  })
+}

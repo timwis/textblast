@@ -53,13 +53,27 @@ functions:
       code:
         src: src/send-twilio-notification/index.js
 
-# Model/Relation permissions are used to limit the API access
-# To take the burden of thinking about those while development, we 
-# preconfigured the wildcard ("*") permission that allows everything
-# Read more here:
-# https://docs-next.graph.cool/reference/auth/authorization/overview-iegoo0heez
 permissions:
-- operation: "*"
+# Development
+# - operation: "*"
+
+# Blast
+- operation: Blast.read
+  authenticated: true
+  fields: [id, body, status, recipients, createdAt]
+  query: src/permissions/blast.graphql:BlastBelongsToSelf
+
+- operation: Blast.create
+  authenticated: true
+  fields: [body]
+
+- operation: UserBlasts.connect
+  authenticated: true
+  query: src/permissions/blast.graphql:UserIsSelf
+
+- operation: BlastRecipients.connect
+  authenticated: true
+  query: src/permissions/blast.graphql:RecipientBelongsToSelf
 
 # Your root tokens used for functions to get full access to the API
 # Read more here:
