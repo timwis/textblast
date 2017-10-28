@@ -40,6 +40,13 @@ functions:
           TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
           TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
 
+  sendTwilioNotification:
+    type: subscription
+    query: src/send-twilio-notification/query.graphql
+    handler:
+      code:
+        src: src/send-twilio-notification/index.js
+
 # Model/Relation permissions are used to limit the API access
 # To take the burden of thinking about those while development, we 
 # preconfigured the wildcard ("*") permission that allows everything

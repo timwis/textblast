@@ -1,0 +1,22 @@
+subscription {
+  Blast(filter: {
+    mutation_in: [CREATED]
+  }) {
+    node {
+      id
+      body
+      user {
+        twilioSubaccount {
+          sid
+          authToken
+          twilioNotifyService {
+            sid
+          }
+        }
+      }
+      recipients {
+        phoneNumber
+      }
+    }
+  }
+}

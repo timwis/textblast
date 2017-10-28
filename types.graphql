@@ -55,11 +55,18 @@ type Recipient @model {
   updatedAt: DateTime!
 }
 
+enum BlastStatus {
+  NEW
+  SENT
+  FAILED
+}
+
 type Blast @model {
   id: ID! @isUnique
   user: User! @relation(name: "UserBlasts")
   body: String!
   twilioNotificationSid: String
+  status: BlastStatus @defaultValue(value: "NEW")
   recipients: [Recipient!]! @relation(name: "BlastRecipients")
 
   createdAt: DateTime!
