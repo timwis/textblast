@@ -48,7 +48,8 @@ module.exports = {
         AUTH0_CLIENT_ID: JSON.stringify(process.env.AUTH0_CLIENT_ID),
         AUTH0_DOMAIN: JSON.stringify(process.env.AUTH0_DOMAIN),
         AUTH0_API_IDENTIFIER: JSON.stringify(process.env.AUTH0_API_IDENTIFIER),
-        AUTH0_CALLBACK_URL: JSON.stringify(process.env.AUTH0_CALLBACK_URL)
+        AUTH0_CALLBACK_URL: JSON.stringify(process.env.AUTH0_CALLBACK_URL),
+        API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT)
       }
     })
   ],

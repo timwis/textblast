@@ -1,6 +1,9 @@
 import { WebAuth } from 'auth0-js'
 import { stringify } from 'query-string'
 import { request } from 'graphql-request'
+import * as pify from 'pify'
+
+import * as api from '../api/index.ts'
 
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID as string
 const AUTH0_DOMAIN = process.env.AUTH0_DOMAIN as string
@@ -13,7 +16,7 @@ const auth0 = new WebAuth({
   audience: AUTH0_API_IDENTIFIER,
   redirectUri: AUTH0_CALLBACK_URL,
   responseType: 'token id_token',
-  scope: 'openid'
+  scope: 'openid profile email'
 })
 
 export function initiateLogin ():void {
@@ -21,21 +24,8 @@ export function initiateLogin ():void {
 }
 
 export async function finishLogin () {
-  auth0.parseHash(async (err, result) => {
-    if (err) return console.error(err)
-    const mutation = `
-      mutation ($accessToken: String!) {
-        authenticateUser(
-          accessToken: $accessToken
-        ) {
-          id
-          token
-        }
-      }
-    `
-    const url = `http://localhost:60000/simple/v1/cj96bprm900040112tvqptcn3`
-    const variables = { accessToken: result.accessToken }
-    const loginResult = await request(url, mutation, variables)
-    console.log(loginResult)
-  })
+  const parseHash = pify(auth0.parseHash).bind(auth0)
+  const authResult = await parseHash()
+  const loginResult = await api.authenticateUser(authResult.accessToken)
+  console.log(loginResult)
 }
