@@ -49,6 +49,14 @@ const actions: ActionTree<State, any> = {
   async logout ({ commit }) {
     await localForage.removeItem('user')
     commit('RESET_USER')
+  },
+
+  async getRecipients ({ state, commit }) {
+    const token = state.user.token
+    const userId = state.user.id as string
+    const api = new Api(API_ENDPOINT, token)
+    const recipients = await api.getRecipients(userId)
+    commit('RECEIVE_RECIPIENTS', recipients)
   }
 }
 

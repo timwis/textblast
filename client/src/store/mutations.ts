@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex/types'
 
-import { State, LoginSuccess } from '../types'
+import { State, LoginSuccess, Recipient } from '../types'
 
 const mutations: MutationTree<State> = {
   RECEIVE_USER (state, payload: LoginSuccess): void {
@@ -10,9 +10,13 @@ const mutations: MutationTree<State> = {
   },
 
   RESET_USER (state): void {
-    state.user.id = null
-    state.user.email = null
-    state.user.token = null
+    state.user.id = undefined
+    state.user.email = undefined
+    state.user.token = undefined
+  },
+
+  RECEIVE_RECIPIENTS (state, recipients: [Recipient]): void {
+    state.recipients = recipients
   }
 }
 
