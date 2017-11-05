@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { Route } from 'vue-router/types'
+import { Route, RouteConfig } from 'vue-router'
 
 import Home from '../pages/Home.vue'
 import LoginCallback from '../pages/LoginCallback.vue'
-import { initiateLogin } from '../store/actions.ts'
+import { initiateLogin } from '../store/actions'
 
 Vue.use(VueRouter)
 
-const routes = [
+const routes: [RouteConfig] = [
   {
     path: '/',
     name: 'home',

@@ -1,12 +1,18 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import router from './router/index.ts'
-import store from './store/index.ts'
+import router from './router'
+import store from './store'
 
-new Vue({ // eslint-disable-line
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+Vue.config.productionTip = false
+
+;(async function () {
+  await store.dispatch('getStoredUser') // TODO: Better place for this?
+
+  new Vue({ // eslint-disable-line
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
+  })
+})()

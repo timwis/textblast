@@ -11,8 +11,9 @@ export default Vue.extend({
   props: [
     'query'
   ],
-  created (): void {
-    this.finishLogin()
+  async created () {
+    await this.finishLogin()
+    this.$router.push('/')
   },
   methods: mapActions([
     'finishLogin'

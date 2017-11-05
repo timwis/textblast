@@ -1,17 +1,24 @@
 <template lang="pug">
   div#app
-    NavBar
+    NavBar(:email='email')
     router-view
 </template>
 
 <script lang="ts">
-import NavBar from './components/NavBar.vue'
+import Vue from 'vue'
+import { mapState } from 'vuex'
 
-export default {
+import NavBar from './components/NavBar.vue'
+import { State } from './types'
+
+export default Vue.extend({
+  computed: mapState({
+    email: (state: State) => state.user.email
+  }),
   components: {
     NavBar
   }
-}
+})
 </script>
 
 <style lang="sass">
