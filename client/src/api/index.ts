@@ -1,10 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-interface AuthenticatedUser {
-  id: string
-  token: string
-  email: string
-}
+import { AuthenticatedUser, Recipient } from '../types'
 
 export default class Api {
   client: GraphQLClient
@@ -16,7 +12,7 @@ export default class Api {
     this.client = new GraphQLClient(endpoint, opts)
   }
 
-  async authenticateUser (accessToken: String): Promise<AuthenticatedUser> {
+  async authenticateUser (accessToken: string): Promise<AuthenticatedUser> {
     const mutation = `
       mutation ($accessToken: String!) {
         authenticateUser(
@@ -30,5 +26,25 @@ export default class Api {
     `
     return this.client.request<{ authenticateUser: AuthenticatedUser }>(mutation, { accessToken })
       .then((response) => response.authenticateUser)
+  }
+
+  async getRecipients (userId: string): Promise<[Recipient]> {
+    const query = `
+      query ($userId: ID!) {
+        allRecipients(filter: {
+          user: {
+            id: $userId
+          }
+        }) {
+          id
+          tags
+          phoneNumber
+          name
+          createdAt
+        }
+      }
+    `
+    return this.client.request<{allRecipients: [Recipient]}>(query, { userId })
+      .then((response) => response.allRecipients)
   }
 }

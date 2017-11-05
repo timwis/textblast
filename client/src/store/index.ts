@@ -3,16 +3,17 @@ import Vuex from 'vuex'
 
 import actions from './actions'
 import mutations from './mutations'
-import { State } from '../types'
+import { State, Recipient } from '../types'
 
 Vue.use(Vuex)
 
 const state: State = {
   user: {
-    id: null,
-    email: null,
-    token: null
-  }
+    id: undefined,
+    email: undefined,
+    token: undefined
+  },
+  recipients: []
 }
 
 const store = new Vuex.Store<State>({
