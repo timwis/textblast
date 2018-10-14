@@ -57,6 +57,20 @@ const actions: ActionTree<State, any> = {
     const api = new Api(API_ENDPOINT, token)
     const recipients = await api.getRecipients(userId)
     commit('RECEIVE_RECIPIENTS', recipients)
+  },
+
+  async getAvailablePhoneNumbers ({ state, commit }, areaCode: string) {
+    const token = state.user.token
+    const api = new Api(API_ENDPOINT, token)
+    const availablePhoneNumbers = await api.getAvailablePhoneNumbers(areaCode)
+    commit('RECEIVE_AVAILABLE_PHONE_NUMBERS', availablePhoneNumbers)
+  },
+
+  async buyPhoneNumber({ state, commit }, phoneNumber: string) {
+    const token = state.user.token
+    const api = new Api(API_ENDPOINT, token)
+    const boughtPhoneNumber = await api.buyPhoneNumber(phoneNumber)
+    // commit('RECEIVE_BOUGHT_PHONE_NUMBER', boughtPhoneNumber)
   }
 }
 

@@ -10,7 +10,8 @@ export interface State {
     email?: string
     token?: string
   },
-  recipients: Recipient[]
+  recipients: Recipient[],
+  availablePhoneNumbers: AvailablePhoneNumbers[]
 }
 
 export interface AuthenticatedUser {
@@ -25,4 +26,16 @@ export interface Recipient {
   phoneNumber: string
   name?: string
   createdAt: string
+}
+
+export interface AvailablePhoneNumbers {
+  friendlyName: string
+  phoneNumber: string
+  region: string
+  postalCode: string
+}
+
+export interface PhoneNumber {
+  id: string
+  phoneNumber: string
 }

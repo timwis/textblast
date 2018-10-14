@@ -13,7 +13,8 @@ const state: State = {
     email: undefined,
     token: undefined
   },
-  recipients: []
+  recipients: [],
+  availablePhoneNumbers: []
 }
 
 const store = new Vuex.Store<State>({

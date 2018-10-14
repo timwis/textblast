@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-import { AuthenticatedUser, Recipient } from '../types'
+import { AuthenticatedUser, Recipient, AvailablePhoneNumbers, PhoneNumber } from '../types'
 
 export default class Api {
   client: GraphQLClient
@@ -28,7 +28,7 @@ export default class Api {
       .then((response) => response.authenticateUser)
   }
 
-  async getRecipients (userId: string): Promise<[Recipient]> {
+  async getRecipients (userId: string): Promise<Recipient[]> {
     const query = `
       query ($userId: ID!) {
         allRecipients(filter: {
@@ -44,7 +44,35 @@ export default class Api {
         }
       }
     `
-    return this.client.request<{allRecipients: [Recipient]}>(query, { userId })
+    return this.client.request<{allRecipients: Recipient[]}>(query, { userId })
       .then((response) => response.allRecipients)
+  }
+
+  async getAvailablePhoneNumbers (areaCode?: string): Promise<AvailablePhoneNumbers[]> {
+    const query = `
+      query ($areaCode: String) {
+        getAvailablePhoneNumbers(areaCode: $areaCode) {
+          friendlyName
+          phoneNumber
+          region
+          postalCode
+        }
+      }
+    `
+    return this.client.request<{getAvailablePhoneNumbers: AvailablePhoneNumbers[]}>(query, { areaCode })
+      .then((response) => response.getAvailablePhoneNumbers)
+  }
+
+  async buyPhoneNumber (phoneNumber: string): Promise<PhoneNumber> {
+    const mutation = `
+      mutation ($phoneNumber: String!) {
+        buyTwilioPhoneNumber(phoneNumber: $phoneNumber) {
+          id
+          phoneNumber
+        }
+      }
+    `
+    return this.client.request<{buyTwilioPhoneNumber: PhoneNumber}>(mutation, { phoneNumber })
+      .then((response) => response.buyTwilioPhoneNumber)
   }
 }
